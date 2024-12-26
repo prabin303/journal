@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Blog Dashboard</h1>
+    <nav>
+      <a href="index.html">View Blogs</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <form id="blog-form">
+        <h2>Create a Blog Post</h2>
+        <label for="title">Title:</label>
+        <input type="text" id="title" placeholder="Enter the blog title" required>
+
+        <label for="content">Content:</label>
+        <textarea id="content" rows="10" placeholder="Write your blog content here (use Enter for new paragraphs)" required></textarea>
+
+        <button type="submit">Publish</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Dostel. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById('blog-form').addEventListener('submit', function (e) {
+      e.preventDefault(); // Prevent form submission
+
+      // Retrieve title and content from form
+      const title = document.getElementById('title').value.trim();
+      const content = document.getElementById('content').value.trim();
+
+      if (!title || !content) {
+        alert('Both title and content are required!');
+        return;
+      }
+
+      // Create a blog object
+      const blogPost = {
+        title,
+        content: content.split('\n').filter(p => p.trim() !== ''), // Split by paragraphs
+        createdAt: new Date().toISOString()
+      };
+
+      // Save to localStorage
+      const blogs = JSON.parse(localStorage.getItem('blogs')) || [];
+      blogs.push(blogPost);
+      localStorage.setItem('blogs', JSON.stringify(blogs));
+
+      // Reset the form and notify user
+      document.getElementById('blog-form').reset();
+      alert('Blog post published!');
+    });
+  </script>
+</body>
+</html>
